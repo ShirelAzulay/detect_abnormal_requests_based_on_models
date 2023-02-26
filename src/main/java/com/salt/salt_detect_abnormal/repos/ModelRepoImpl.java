@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 public class ModelRepoImpl implements ModelDBRepository{
 
     public ModelRepoImpl() {
-        System.out.println("Do nothing");
     }
 
 }

@@ -1,9 +1,12 @@
 package com.salt.salt_detect_abnormal.model.model_template;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public abstract class Model {
     private String path;
     private String method;
+    @JsonProperty("query_params")
     private List<QueryParam> queryParams;
     private List<Header> headers;
     private List<Object> body;
