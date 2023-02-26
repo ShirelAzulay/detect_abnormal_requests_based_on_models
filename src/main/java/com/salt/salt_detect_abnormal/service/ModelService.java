@@ -8,6 +8,8 @@ import com.salt.salt_detect_abnormal.repos.StatefulMapConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ModelService {
@@ -21,10 +23,23 @@ public class ModelService {
     }
 
 
-    public String create(final RequestConfigDto requestConfigDto) {
+    public String create(final List<RequestConfigDto> requestConfigDtos) {
+
+        /////
+//        need to delete shirel:
+
+        statefulMapConfig.myStatefulMap().put("key1", requestConfigDtos.get(0).getPath());
+        System.out.println("after change = " + statefulMapConfig.myStatefulMap().get("key1"));
+        /////
+
+
         final MyModelDB myModelDB = new MyModelDB();
-        mapToEntity(requestConfigDto, myModelDB);
-        return ModelDBRepository.save(myModelDB);
+
+        requestConfigDtos.forEach(current->
+            {mapToEntity(current, myModelDB);
+             ModelDBRepository.save(myModelDB);
+            });
+        return "succeeded";
     }
 
 
@@ -36,6 +51,7 @@ public class ModelService {
     }
 
     private MyModelDB mapToEntity(final RequestConfigDto requestConfigDto , final MyModelDB myModelDB) {
+
        /* myModelDB.setName(myModelDBDTO.getName());
         myModelDB.setComments(myModelDBDTO.getComments());*/
         return myModelDB;

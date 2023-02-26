@@ -11,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/models")
@@ -23,24 +25,12 @@ public class ModelsController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("models") @Valid final RequestConfigDto requestConfigDto,
-            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+    public String add(final @RequestBody List<RequestConfigDto> requestConfigDtos,
+                       final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "modelsDB/add";
         }
-        modelService.create (requestConfigDto);
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("modelsDB.create.success"));
-        return "redirect:/models";
-    }
-
-
-    @PostMapping("/add222")
-    public String add222(@ModelAttribute("models") @Valid final RequestConfigDto requestConfigDto,
-                      final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            return "modelsDB/add";
-        }
-        modelService.create (requestConfigDto);
+        modelService.create (requestConfigDtos);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("modelsDB.create.success"));
         return "redirect:/models";
     }
