@@ -1,7 +1,7 @@
-package com.salt.salt_detect_abnormal.model;
+package com.salt.salt_detect_abnormal.model.model_template;
 import java.util.List;
 
-public class RequestConfigDto {
+public abstract class Model {
     private String path;
     private String method;
     private List<QueryParam> queryParams;
