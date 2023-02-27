@@ -1,7 +1,5 @@
 package com.salt.salt_detect_abnormal.model;
 
-import java.util.List;
-
 
 public class ErrorResponse {
 

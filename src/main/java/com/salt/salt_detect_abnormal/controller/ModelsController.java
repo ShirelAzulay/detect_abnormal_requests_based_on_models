@@ -3,9 +3,9 @@
 package com.salt.salt_detect_abnormal.controller;
 
 import com.salt.salt_detect_abnormal.model.model_template.ModelTemplateDto;
-import com.salt.salt_detect_abnormal.repos.ModelDBRepository;
 import com.salt.salt_detect_abnormal.service.ModelService;
 import com.salt.salt_detect_abnormal.util.*;
+import groovy.transform.Internal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,16 +29,45 @@ public class ModelsController {
         this.modelService = modelService;
     }
 
-    @PostMapping("/add")
-    public String add(final @RequestBody List<ModelTemplateDto> modelTemplateDtos,
+    @PostMapping("/addModel")
+    public String addModel(final @RequestBody List<ModelTemplateDto> modelTemplateDtos,
                        final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
+        try{
+            String failed = getStatus(bindingResult);
+            if (failed != null) return failed;
+            modelService.addModel(modelTemplateDtos);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("modelsDB.create.success"));
+            logger.info(GeneralMsgUtils.ACTION_WAS_SUCCEEDED);
+            return "success";
+        }
+        catch (Exception e){
             return "failed";
         }
-        modelService.create (modelTemplateDtos);
-        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("modelsDB.create.success"));
-        logger.warn("succeeded");
-        return "success";
+    }
+
+    @PostMapping("/verifyRequest")
+    @Internal
+    public String getModel(final @RequestBody List<ModelTemplateDto> modelTemplateDtos,
+                           final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        try{
+            String failed = getStatus(bindingResult);
+            if (failed != null) return failed;
+            modelService.getModel(modelTemplateDtos);
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("modelsDB.create.success"));
+            logger.info(GeneralMsgUtils.ACTION_WAS_SUCCEEDED);
+            return "success";
+        }
+        catch (Exception e){
+            return "failed";
+        }
+    }
+
+    private String getStatus(BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.error(GeneralMsgUtils.SOMETHING_WAS_WRONG, bindingResult.getFieldError().toString());
+            return "failed";
+        }
+        return null;
     }
 }
 
