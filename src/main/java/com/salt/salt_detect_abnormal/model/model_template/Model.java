@@ -9,7 +9,7 @@ public abstract class Model {
     @JsonProperty("query_params")
     private List<QueryParam> queryParams;
     private List<Header> headers;
-    private List<Object> body;
+    private List<Body> body;
 
     public String getPath() {
         return path;
@@ -43,15 +43,15 @@ public abstract class Model {
         this.headers = headers;
     }
 
-    public List<Object> getBody() {
+    public List<Body> getBody() {
         return body;
     }
 
-    public void setBody(List<Object> body) {
+    public void setBody(List<Body> body) {
         this.body = body;
     }
 
-    public static class QueryParam {
+    public static class QueryParam extends Model {
         private String name;
         private List<String> types;
         private boolean required;
@@ -81,7 +81,37 @@ public abstract class Model {
         }
     }
 
-    public static class Header {
+    public static class Header extends Model {
+        private String name;
+        private List<String> types;
+        private boolean required;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public List<String> getTypes() {
+            return types;
+        }
+
+        public void setTypes(List<String> types) {
+            this.types = types;
+        }
+
+        public boolean isRequired() {
+            return required;
+        }
+
+        public void setRequired(boolean required) {
+            this.required = required;
+        }
+    }
+
+    public static class Body extends Model {
         private String name;
         private List<String> types;
         private boolean required;

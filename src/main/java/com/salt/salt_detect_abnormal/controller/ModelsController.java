@@ -45,7 +45,23 @@ public class ModelsController {
         }
     }
 
-    @PostMapping("/verifyRequest")
+    @PostMapping("/verifyModel")
+    public String verifyModel(final @RequestBody List<ModelTemplateDto> modelTemplateDtos,
+                           final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        try{
+            String failed = getStatus(bindingResult);
+            if (failed != null) return failed;
+            String summary = modelService.verifyModel(modelTemplateDtos.get(0));
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("modelsDB.create.success"));
+            logger.info(GeneralMsgUtils.ACTION_WAS_SUCCEEDED);
+            return "success";
+        }
+        catch (Exception e){
+            return "failed";
+        }
+    }
+
+    @PostMapping("/getModel")
     @Internal
     public String getModel(final @RequestBody List<ModelTemplateDto> modelTemplateDtos,
                            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {

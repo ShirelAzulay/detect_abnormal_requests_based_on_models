@@ -14,7 +14,7 @@ public class ModelRepoImpl implements ModelDBRepository{
      public String saveModel(ModelTemplateDB modelTemplateDB) {
         String calcKey = null;
         try {
-            calcKey = generalUtilsManipulation.calcKey(modelTemplateDB);
+            calcKey = generalUtilsManipulation.calcKeyGlobalMapDB(modelTemplateDB);
             generalUtilsManipulation.addModelToMap(modelTemplateDB, calcKey);
             return calcKey;
         } catch (Exception e) {
@@ -27,7 +27,7 @@ public class ModelRepoImpl implements ModelDBRepository{
     public Model getModel(Model modelTemplateDto) {
         String calcKey;
         try {
-            calcKey = generalUtilsManipulation.calcKey(modelTemplateDto);
+            calcKey = generalUtilsManipulation.calcKeyGlobalMapDB(modelTemplateDto);
             return generalUtilsManipulation.getModelFromMap(calcKey);
         } catch (Exception e) {
             logger.error(GeneralMsgUtils.SOMETHING_WAS_WRONG, e.getCause());
@@ -35,6 +35,7 @@ public class ModelRepoImpl implements ModelDBRepository{
         }
 
     }
+
     public ModelRepoImpl(GeneralUtilsManipulation generalUtilsManipulation) {
         this.generalUtilsManipulation = generalUtilsManipulation;
     }
